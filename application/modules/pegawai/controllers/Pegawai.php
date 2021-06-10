@@ -152,7 +152,10 @@ class Pegawai extends CI_Controller {
 				akhir_kontrak,
 				lokasi_kerja,
 				id_marital_status,
-				nama_keluarga
+				nama_keluarga, 
+				alamat_keluarga,
+				hubungan_keluarga,
+				bpjs_kes
 			 ) values ('".$sheetData[$i][0]."',
 				'".ucwords(strtolower($sheetData[$i]['1']))."',
 				'".$sheetData[$i][2]."',
@@ -176,8 +179,11 @@ class Pegawai extends CI_Controller {
 				'".$sheetData[$i][20]."',
 				'".$sheetData[$i][21]."',
 				'".$sheetData[$i][22]."',
-				'".$marital."' 
-				'".$sheetData[$i][25]."',  
+				'".$marital."',
+				'".$sheetData[$i][25]."',
+				'".$sheetData[$i][26]."',
+				'".$sheetData[$i][27]."',
+				'".str_replace($replaced,"",$sheetData[$i][28])."'
 				)");
 			
 			} 
