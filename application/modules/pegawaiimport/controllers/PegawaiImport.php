@@ -1,4 +1,10 @@
 <?php
+
+/*
+Developed by : Okki Setyawan
+if you have something problem you can tell me by mail : okkisetyawan@gmail.comm
+*/
+
 date_default_timezone_set("Asia/Jakarta");
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -91,7 +97,7 @@ class Pegawaiimport extends CI_Controller {
 				
 				$replaced = [" ",".","-","'"]; 
 				 
-				$this->db->query("insert into pegawai (nik,
+				$store = $this->db->query("insert into pegawai (nik,
 				nama,
 				alamat,
 				tempat_lahir,
@@ -190,9 +196,20 @@ class Pegawaiimport extends CI_Controller {
 				'".$sheetData[$i][49]."',
 				'".$sheetData[$i][50]."'
 				)");
+
+				
 			
 			} 
-	 
+			if($store){
+				$arr_logs = array('action'=>'import','modules'=>'pegawaiimport','id_user'=>'99','username'=>'okki','timestamp'=>date('Y-m-d H:i:s'));
+				$arr_true = array("status"=>"success","code"=>200);
+				$arr_false = array("status"=>"failed","code"=>400);
+
+				$this->db->insert('logs_sys', $arr_logs);
+				echo json_encode($arr_true);
+			}else{
+				echo json_encode($arr_false);
+			}
 		} 
 
 	}
