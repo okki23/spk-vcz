@@ -5,7 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
-class Pegawai extends CI_Controller {
+
+class Pegawaiimport extends CI_Controller {
   
 	public function __construct(){
 
@@ -14,42 +15,18 @@ class Pegawai extends CI_Controller {
 	}
 	
 	public function index(){
-		// $date = '27-Jun-80';
-		// $conv = date('Y-m-d',strtotime($date));
-		// echo $conv;
-		// die();
-		// $te = "jkas dsafd";
-		// echo ucwords($te);
-		// die();
-		$this->load->view('pegawai/pegawai_view.php');
-
+		$data['konten'] = 'pegawaiimport/pegawaiimport_view';
+		$this->load->view('template_view',$data); 
 	}
-	
-	public function export(){
+	  
+	public function save(){
 
-		$spreadsheet = new Spreadsheet();
-		$sheet = $spreadsheet->getActiveSheet();
-		$sheet->setCellValue('A1', 'Hello World !');
-		$writer = new Xlsx($spreadsheet);
-		$filename = 'name-of-the-generated-file';
+		$filter_extension = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		
-		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"');
-		header('Cache-Control: max-age=0');
-		$writer->save('php://output'); // download file
-
-	}
-	
-	
-
-	public function import(){
-
-		$file_mimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		if(isset($_FILES['upload_file']['name']) && in_array($_FILES['upload_file']['type'], $filter_extension)) {
+		$extfile = explode('.', $_FILES['upload_file']['name']);
 		
-		if(isset($_FILES['upload_file']['name']) && in_array($_FILES['upload_file']['type'], $file_mimes)) {
-		$arr_file = explode('.', $_FILES['upload_file']['name']);
-		
-		$extension = end($arr_file);
+		$extension = end($extfile);
 			if('csv' == $extension){
 				$reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
 			} else {
@@ -112,8 +89,7 @@ class Pegawai extends CI_Controller {
 					$status_kerja = $getstatuskerja->id;
 				}
 				
-				$replaced = [" ",".","-","'"];
-				 
+				$replaced = [" ",".","-","'"]; 
 				 
 				$this->db->query("insert into pegawai (nik,
 				nama,

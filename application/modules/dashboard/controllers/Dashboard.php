@@ -14,8 +14,9 @@ class Dashboard extends CI_Controller {
 	}
 	
 	public function index(){
-		 
-		$this->load->view('dashboard/dashboard_view');
+
+		$data['konten'] = 'dashboard/dashboard_view';
+		$this->load->view('template_view',$data);
 
 	}
 	 
